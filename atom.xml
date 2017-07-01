@@ -43,8 +43,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2017/06/25/hello-world/"/>
-    <id>http://yoursite.com/2017/06/25/hello-world/</id>
+    <link href="http://yoursite.com/2017/06/25/hello_world/"/>
+    <id>http://yoursite.com/2017/06/25/hello_world/</id>
     <published>2017-06-24T16:02:04.000Z</published>
     <updated>2017-06-24T16:02:04.000Z</updated>
     
