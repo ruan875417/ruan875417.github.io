@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-07-01T08:30:11.000Z</updated>
+  <updated>2017-07-01T09:14:41.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -19,16 +19,16 @@
     <title>Hexo</title>
     <link href="http://yoursite.com/2017/07/01/hexo/"/>
     <id>http://yoursite.com/2017/07/01/hexo/</id>
-    <published>2017-07-01T08:30:11.000Z</published>
-    <updated>2017-07-01T08:30:11.000Z</updated>
+    <published>2017-07-01T09:14:41.000Z</published>
+    <updated>2017-07-01T09:14:41.000Z</updated>
     
-    <content type="html"><![CDATA[<p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档</a><br><a href="http://theme-next.iissnan.com" target="_blank" rel="external">next主题配置官网</a></p>
+    <content type="html"><![CDATA[<p><a href="http://opiece.me/2015/04/09/hexo-guide/" target="_blank" rel="external">使用Hexo搭建个人博客(基于hexo3.0)</a><br><a href="http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/" target="_blank" rel="external">将hexo博客同时托管到github和coding</a><br><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档</a><br><a href="http://theme-next.iissnan.com" target="_blank" rel="external">next主题配置官网</a><br><a href="http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/" target="_blank" rel="external">next主题显示RSS配置</a></p>
 <a id="more"></a>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;https://hexo.io/zh-cn/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo官方文档&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://theme-next.iissnan.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;next主题配置官网&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;http://opiece.me/2015/04/09/hexo-guide/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用Hexo搭建个人博客(基于hexo3.0)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;将hexo博客同时托管到github和coding&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://hexo.io/zh-cn/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo官方文档&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://theme-next.iissnan.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;next主题配置官网&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;next主题显示RSS配置&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -37,7 +37,7 @@
     
       <category term="Hexo" scheme="http://yoursite.com/tags/Hexo/"/>
     
-      <category term="next" scheme="http://yoursite.com/tags/next/"/>
+      <category term="Next" scheme="http://yoursite.com/tags/Next/"/>
     
   </entry>
   
