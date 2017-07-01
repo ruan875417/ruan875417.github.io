@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-24T16:02:04.000Z</updated>
+  <updated>2017-07-01T08:30:11.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo</title>
+    <link href="http://yoursite.com/2017/07/01/hexo/"/>
+    <id>http://yoursite.com/2017/07/01/hexo/</id>
+    <published>2017-07-01T08:30:11.000Z</published>
+    <updated>2017-07-01T08:30:11.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档</a><br><a href="http://theme-next.iissnan.com" target="_blank" rel="external">next主题配置官网</a></p>
+<a id="more"></a>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://hexo.io/zh-cn/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo官方文档&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://theme-next.iissnan.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;next主题配置官网&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="已阅" scheme="http://yoursite.com/categories/%E5%B7%B2%E9%98%85/"/>
+    
+    
+      <category term="Hexo" scheme="http://yoursite.com/tags/Hexo/"/>
+    
+      <category term="next" scheme="http://yoursite.com/tags/next/"/>
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
