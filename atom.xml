@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-07-02T06:43:25.000Z</updated>
+  <updated>2017-07-02T07:07:44.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,16 +20,16 @@
     <link href="http://yoursite.com/2017/07/02/read/"/>
     <id>http://yoursite.com/2017/07/02/read/</id>
     <published>2017-07-02T06:04:24.000Z</published>
-    <updated>2017-07-02T06:43:25.000Z</updated>
+    <updated>2017-07-02T07:07:44.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p><a href="http://opiece.me/2015/04/09/hexo-guide/" target="_blank" rel="external">使用Hexo搭建个人博客(基于hexo3.0)</a><br><a href="http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/" target="_blank" rel="external">将hexo博客同时托管到github和coding</a><br><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档</a><br><a href="http://theme-next.iissnan.com" target="_blank" rel="external">next主题配置官网</a><br><a href="http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/" target="_blank" rel="external">next主题显示RSS配置</a>   </p>
+    <content type="html"><![CDATA[<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p><a href="http://opiece.me/2015/04/09/hexo-guide/" target="_blank" rel="external">使用Hexo搭建个人博客(基于hexo3.0)</a><br><a href="http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/" target="_blank" rel="external">将hexo博客同时托管到github和coding</a><br><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档</a><br><a href="http://theme-next.iissnan.com" target="_blank" rel="external">next主题配置官网</a><br><a href="http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/" target="_blank" rel="external">next主题显示RSS配置</a><br><a href="http://www.maoxuner.cn/2017/03/10/hexo-skip-render.html" target="_blank" rel="external">Hexo渲染时排除部分文件或目录</a>   </p>
 <h2 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h2><p><a href="http://blog.leanote.com/post/freewalk/Markdown-语法手册" target="_blank" rel="external">Markdown语法手册</a><br><a href="http://wowubuntu.com/markdown" target="_blank" rel="external">Markdown语法说明</a><br><a href="http://einverne.github.io/markdown-style-guide/zh.html" target="_blank" rel="external">Markdown书写风格指南（中文）</a><br><a href="https://github.com/cirosantilli/markdown-style-guide/blob/gh-pages/index.md" target="_blank" rel="external">Markdown书写风格指南（英文）</a>   </p>
 <a id="more"></a>
 ]]></content>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;Hexo&quot;&gt;&lt;a href=&quot;#Hexo&quot; class=&quot;headerlink&quot; title=&quot;Hexo&quot;&gt;&lt;/a&gt;Hexo&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://opiece.me/2015/04/09/hexo-guide/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用Hexo搭建个人博客(基于hexo3.0)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;将hexo博客同时托管到github和coding&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://hexo.io/zh-cn/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo官方文档&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://theme-next.iissnan.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;next主题配置官网&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;next主题显示RSS配置&lt;/a&gt;   &lt;/p&gt;
+      &lt;h2 id=&quot;Hexo&quot;&gt;&lt;a href=&quot;#Hexo&quot; class=&quot;headerlink&quot; title=&quot;Hexo&quot;&gt;&lt;/a&gt;Hexo&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://opiece.me/2015/04/09/hexo-guide/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用Hexo搭建个人博客(基于hexo3.0)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;将hexo博客同时托管到github和coding&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://hexo.io/zh-cn/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo官方文档&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://theme-next.iissnan.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;next主题配置官网&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;next主题显示RSS配置&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.maoxuner.cn/2017/03/10/hexo-skip-render.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo渲染时排除部分文件或目录&lt;/a&gt;   &lt;/p&gt;
 &lt;h2 id=&quot;Markdown&quot;&gt;&lt;a href=&quot;#Markdown&quot; class=&quot;headerlink&quot; title=&quot;Markdown&quot;&gt;&lt;/a&gt;Markdown&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://blog.leanote.com/post/freewalk/Markdown-语法手册&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Markdown语法手册&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://wowubuntu.com/markdown&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Markdown语法说明&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://einverne.github.io/markdown-style-guide/zh.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Markdown书写风格指南（中文）&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://github.com/cirosantilli/markdown-style-guide/blob/gh-pages/index.md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Markdown书写风格指南（英文）&lt;/a&gt;   &lt;/p&gt;
     
     </summary>
