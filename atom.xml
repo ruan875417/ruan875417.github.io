@@ -42,48 +42,6 @@
   </entry>
   
   <entry>
-    <title>Git对象模型</title>
-    <link href="http://yoursite.com/2017/07/02/git/git-object/"/>
-    <id>http://yoursite.com/2017/07/02/git/git-object/</id>
-    <published>2017-07-02T05:24:02.000Z</published>
-    <updated>2017-07-02T05:32:25.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="Git对象"><a href="#Git对象" class="headerlink" title="Git对象"></a>Git对象</h3><p>Git对象库的对象只有4种类型：块（blob），目录树（tree），提交（commit）和标签（tag）。<br><strong>blob</strong>: blob是binary large object的缩写，用来保存文件的内容，不包含文件的元数据，连文件名也都不包含。<br><strong>tree</strong>: 一个tree对象代表一层目录信息，它管理一些tree对象或blob对象，建立一个包含文件和子目录的完整层次结构。<br><strong>commit</strong>: commit对象保存版本库中每一次变化的元数据，如作者，提交者，提交日期和日志信息等，它指向一个tree对象。<br><strong>tag</strong>: 一个tag对象包括一个对象名(SHA1签名)、对象类型、标签名、标签创建人的名字(tagger), 还有一条可能包含有签名(signature)的消息。  </p>
-<h3 id="SHA1哈希值"><a href="#SHA1哈希值" class="headerlink" title="SHA1哈希值"></a>SHA1哈希值</h3><p>对象库中的每个对象都有一个唯一的名称，这个名称是向对象的内容应用SHA1得到的SHA1哈希值。一个对象的完整内容决定了这个哈希值，并且这个哈希值能唯一对应特定的内容。<br>Git追踪的是内容，如果两个文件内容完全相同，那么不论这两个文件是否在同一目录，Git对象库里只会保存一份blob形式的内容副本。    </p>
-<h3 id="Git对象模型实例"><a href="#Git对象模型实例" class="headerlink" title="Git对象模型实例"></a>Git对象模型实例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server*"></a>Run server<strong>*</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-<a id="more"></a>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;Git对象&quot;&gt;&lt;a href=&quot;#Git对象&quot; class=&quot;headerlink&quot; title=&quot;Git对象&quot;&gt;&lt;/a&gt;Git对象&lt;/h3&gt;&lt;p&gt;Git对象库的对象只有4种类型：块（blob），目录树（tree），提交（commit）和标签（tag）。&lt;br&gt;&lt;strong&gt;blob&lt;/strong&gt;: blob是binary large object的缩写，用来保存文件的内容，不包含文件的元数据，连文件名也都不包含。&lt;br&gt;&lt;strong&gt;tree&lt;/strong&gt;: 一个tree对象代表一层目录信息，它管理一些tree对象或blob对象，建立一个包含文件和子目录的完整层次结构。&lt;br&gt;&lt;strong&gt;commit&lt;/strong&gt;: commit对象保存版本库中每一次变化的元数据，如作者，提交者，提交日期和日志信息等，它指向一个tree对象。&lt;br&gt;&lt;strong&gt;tag&lt;/strong&gt;: 一个tag对象包括一个对象名(SHA1签名)、对象类型、标签名、标签创建人的名字(tagger), 还有一条可能包含有签名(signature)的消息。  &lt;/p&gt;
-&lt;h3 id=&quot;SHA1哈希值&quot;&gt;&lt;a href=&quot;#SHA1哈希值&quot; class=&quot;headerlink&quot; title=&quot;SHA1哈希值&quot;&gt;&lt;/a&gt;SHA1哈希值&lt;/h3&gt;&lt;p&gt;对象库中的每个对象都有一个唯一的名称，这个名称是向对象的内容应用SHA1得到的SHA1哈希值。一个对象的完整内容决定了这个哈希值，并且这个哈希值能唯一对应特定的内容。&lt;br&gt;Git追踪的是内容，如果两个文件内容完全相同，那么不论这两个文件是否在同一目录，Git对象库里只会保存一份blob形式的内容副本。    &lt;/p&gt;
-&lt;h3 id=&quot;Git对象模型实例&quot;&gt;&lt;a href=&quot;#Git对象模型实例&quot; class=&quot;headerlink&quot; title=&quot;Git对象模型实例&quot;&gt;&lt;/a&gt;Git对象模型实例&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo new &lt;span class=&quot;string&quot;&gt;&quot;My New Post&quot;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/writing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Writing&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Run-server&quot;&gt;&lt;a href=&quot;#Run-server&quot; class=&quot;headerlink&quot; title=&quot;Run server*&quot;&gt;&lt;/a&gt;Run server&lt;strong&gt;*&lt;/strong&gt;&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo server&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/server.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Server&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Generate-static-files&quot;&gt;&lt;a href=&quot;#Generate-static-files&quot; class=&quot;headerlink&quot; title=&quot;Generate static files&quot;&gt;&lt;/a&gt;Generate static files&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo generate&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/generating.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Generating&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Deploy-to-remote-sites&quot;&gt;&lt;a href=&quot;#Deploy-to-remote-sites&quot; class=&quot;headerlink&quot; title=&quot;Deploy to remote sites&quot;&gt;&lt;/a&gt;Deploy to remote sites&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo deploy&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/deployment.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Git" scheme="http://yoursite.com/categories/Git/"/>
-    
-    
-      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Hello World</title>
     <link href="http://yoursite.com/2017/06/25/hello-world/"/>
     <id>http://yoursite.com/2017/06/25/hello-world/</id>
