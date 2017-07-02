@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Git," />
 
 
 
@@ -95,12 +95,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ryan&#39;s notes">
-<meta property="og:url" content="http://yoursite.com/tags/Hexo/index.html">
+<meta name="description" content="Git对象Git对象库的对象只有4种类型：块（blob），目录树（tree），提交（commit）和标签（tag）。blob: blob是binary large object的缩写，用来保存文件的内容，不包含文件的元数据，连文件名也都不包含。tree: 一个tree对象代表一层目录信息，它管理一些tree对象或blob对象，建立一个包含文件和子目录的完整层次结构。commit: commit对象">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git对象模型">
+<meta property="og:url" content="http://yoursite.com/2017/07/02/git/git-object/index.html">
 <meta property="og:site_name" content="Ryan&#39;s notes">
+<meta property="og:description" content="Git对象Git对象库的对象只有4种类型：块（blob），目录树（tree），提交（commit）和标签（tag）。blob: blob是binary large object的缩写，用来保存文件的内容，不包含文件的元数据，连文件名也都不包含。tree: 一个tree对象代表一层目录信息，它管理一些tree对象或blob对象，建立一个包含文件和子目录的完整层次结构。commit: commit对象">
+<meta property="og:updated_time" content="2017-07-02T05:32:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ryan&#39;s notes">
+<meta name="twitter:title" content="Git对象模型">
+<meta name="twitter:description" content="Git对象Git对象库的对象只有4种类型：块（blob），目录树（tree），提交（commit）和标签（tag）。blob: blob是binary large object的缩写，用来保存文件的内容，不包含文件的元数据，连文件名也都不包含。tree: 一个tree对象代表一层目录信息，它管理一些tree对象或blob对象，建立一个包含文件和子目录的完整层次结构。commit: commit对象">
 
 
 
@@ -128,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/Hexo/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/02/git/git-object/"/>
 
 
 
 
 
-  <title>标签: Hexo | Ryan's notes</title>
+  <title>Git对象模型 | Ryan's notes</title>
   
 
 
@@ -159,7 +164,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -291,44 +296,195 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h1>Hexo<small>标签</small>
-      </h1>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/02/git/git-object/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryan Ruan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/author.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryan's notes">
+    </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git对象模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-02T13:24:02+08:00">
+                2017-07-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/02/git/git-object/" class="leancloud_visitors" data-flag-title="Git对象模型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <h3 id="Git对象"><a href="#Git对象" class="headerlink" title="Git对象"></a>Git对象</h3><p>Git对象库的对象只有4种类型：块（blob），目录树（tree），提交（commit）和标签（tag）。<br><strong>blob</strong>: blob是binary large object的缩写，用来保存文件的内容，不包含文件的元数据，连文件名也都不包含。<br><strong>tree</strong>: 一个tree对象代表一层目录信息，它管理一些tree对象或blob对象，建立一个包含文件和子目录的完整层次结构。<br><strong>commit</strong>: commit对象保存版本库中每一次变化的元数据，如作者，提交者，提交日期和日志信息等，它指向一个tree对象。<br><strong>tag</strong>: 一个tag对象包括一个对象名(SHA1签名)、对象类型、标签名、标签创建人的名字(tagger), 还有一条可能包含有签名(signature)的消息。  </p>
+<h3 id="SHA1哈希值"><a href="#SHA1哈希值" class="headerlink" title="SHA1哈希值"></a>SHA1哈希值</h3><p>对象库中的每个对象都有一个唯一的名称，这个名称是向对象的内容应用SHA1得到的SHA1哈希值。一个对象的完整内容决定了这个哈希值，并且这个哈希值能唯一对应特定的内容。<br>Git追踪的是内容，如果两个文件内容完全相同，那么不论这两个文件是否在同一目录，Git对象库里只会保存一份blob形式的内容副本。    </p>
+<h3 id="Git对象模型实例"><a href="#Git对象模型实例" class="headerlink" title="Git对象模型实例"></a>Git对象模型实例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server*"></a>Run server<strong>*</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+<a id="more"></a>
 
-      <h2 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/07/01/hexo_read/" itemprop="url">
-              
-                <span itemprop="name">Hexo</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-07-01T17:19:19+08:00"
-              content="2017-07-01" >
-          07-01
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/25/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/02/read/" rel="prev" title="读过的文章">
+                读过的文章 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -336,6 +492,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -355,8 +515,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/author.png"
@@ -371,7 +540,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -382,7 +551,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -463,6 +632,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git对象"><span class="nav-number">1.</span> <span class="nav-text">Git对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SHA1哈希值"><span class="nav-number">2.</span> <span class="nav-text">SHA1哈希值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git对象模型实例"><span class="nav-number">3.</span> <span class="nav-text">Git对象模型实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">4.</span> <span class="nav-text">Run server*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">5.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">6.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -576,10 +761,10 @@
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
 
-  
+
 
   
 
