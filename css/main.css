@@ -1523,7 +1523,7 @@ pre .javascript .function {
   border: none;
 }
 .my_post_copyright {
-  width: 85%;
+  width: 90%;
   max-width: 45em;
   margin: 2.8em auto 0;
   padding: 0.5em 1em;
@@ -1730,7 +1730,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #6bb1fe;
+  background: #d5f94f;
 }
 .links-of-blogroll {
   font-size: 13px;
