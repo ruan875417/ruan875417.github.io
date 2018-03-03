@@ -95,18 +95,18 @@
 
 
 
-<meta name="description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。 Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：">
+<meta name="description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis源码剖析--Redis源码结构及阅读方法">
 <meta property="og:url" content="http://yoursite.com/2018/03/02/redis/redis-read-method/index.html">
 <meta property="og:site_name" content="Ryan&#39;s notes">
-<meta property="og:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。 Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：">
+<meta property="og:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。">
 <meta property="og:image" content="http://yoursite.com/img/redis/overview/1.png">
-<meta property="og:updated_time" content="2018-03-03T10:39:49.000Z">
+<meta property="og:updated_time" content="2018-03-03T16:18:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis源码剖析--Redis源码结构及阅读方法">
-<meta name="twitter:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。 Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：">
+<meta name="twitter:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。">
 <meta name="twitter:image" content="http://yoursite.com/img/redis/overview/1.png">
 
 
@@ -405,8 +405,8 @@
       
 
       
-        <p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。</p>
-<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：<br><a id="more"></a></p>
+        <p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。<a id="more"></a></p>
+<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：  </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ... //进入存放redis的文件夹</div><div class="line">wget http://download.redis.io/releases/redis-4.0.8.tar.gz</div><div class="line">tar -zxvf redis-4.0.8.tar.gz</div></pre></td></tr></table></figure>
 <p>解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示： </p>
 <p><img src="/img/redis/overview/1.png" alt="redis source code overview"> </p>
@@ -478,7 +478,7 @@
 
       
     </div>
-
+    
     <div>
       
         
@@ -500,11 +500,54 @@
       
     </div>
 
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束，感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/03/02/redis/redis-read-method/">Redis源码剖析--Redis源码结构及阅读方法</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Ryan Ruan 的个人博客">Ryan Ruan</a></p>
+  <p><span>本文链接:</span><a href="/2018/03/02/redis/redis-read-method/" title="Redis源码剖析--Redis源码结构及阅读方法">http://yoursite.com/2018/03/02/redis/redis-read-method/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2018/03/02/redis/redis-read-method/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+	  $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+      
+    </div>
+    
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/Redis/" rel="tag"># Redis</a>
+            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
           
         </div>
       
