@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-03-03T16:18:38.000Z</updated>
+  <updated>2018-03-03T16:25:29.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/03/02/redis/redis-read-method/"/>
     <id>http://yoursite.com/2018/03/02/redis/redis-read-method/</id>
     <published>2018-03-01T16:00:00.000Z</published>
-    <updated>2018-03-03T16:18:38.000Z</updated>
+    <updated>2018-03-03T16:25:29.000Z</updated>
     
     <content type="html"><![CDATA[<p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。<a id="more"></a></p>
 <h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：  </p>
@@ -112,7 +112,7 @@
     <link href="http://yoursite.com/2017/07/02/read/tools-read/"/>
     <id>http://yoursite.com/2017/07/02/read/tools-read/</id>
     <published>2017-07-01T16:00:00.000Z</published>
-    <updated>2018-03-03T16:23:57.000Z</updated>
+    <updated>2018-03-03T16:25:21.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p><a href="http://opiece.me/2015/04/09/hexo-guide/" target="_blank" rel="external">使用Hexo搭建个人博客(基于hexo3.0)</a><br><a href="http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/" target="_blank" rel="external">将hexo博客同时托管到github和coding</a><a id="more"></a><br><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档</a><br><a href="http://theme-next.iissnan.com" target="_blank" rel="external">next主题配置官网</a><br><a href="http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/" target="_blank" rel="external">next主题显示RSS配置</a><br><a href="http://www.maoxuner.cn/2017/03/10/hexo-skip-render.html" target="_blank" rel="external">Hexo渲染时排除部分文件或目录</a><br><a href="http://www.5isjyx.com/coding/201704/nextreadthefulltext.html" target="_blank" rel="external">next主题怎么让首页不显示全文</a><br><a href="https://asdfv1929.github.io/2018/01/28/add-the-end/" target="_blank" rel="external">next主题内给每篇文章后添加结束标语</a><br><a href="https://zhuanlan.zhihu.com/p/28128674" target="_blank" rel="external">hexo的next主题个性化教程:打造炫酷网站</a></p>
 <h2 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h2><p><a href="http://blog.leanote.com/post/freewalk/Markdown-语法手册" target="_blank" rel="external">Markdown语法手册</a><br><a href="http://wowubuntu.com/markdown" target="_blank" rel="external">Markdown语法说明</a><br><a href="http://einverne.github.io/markdown-style-guide/zh.html" target="_blank" rel="external">Markdown书写风格指南（中文）</a><br><a href="https://github.com/cirosantilli/markdown-style-guide/blob/gh-pages/index.md" target="_blank" rel="external">Markdown书写风格指南（英文）</a>     </p>
@@ -137,7 +137,7 @@
     <link href="http://yoursite.com/2017/06/25/hello-world/"/>
     <id>http://yoursite.com/2017/06/25/hello-world/</id>
     <published>2017-06-24T16:00:00.000Z</published>
-    <updated>2018-03-03T16:23:48.000Z</updated>
+    <updated>2018-03-03T16:25:23.000Z</updated>
     
     <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.<a id="more"></a></p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
