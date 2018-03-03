@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-03-03T08:02:44.000Z</updated>
+  <updated>2018-03-03T08:36:16.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,11 +20,13 @@
     <link href="http://yoursite.com/2018/03/02/redis/redis-read-method/"/>
     <id>http://yoursite.com/2018/03/02/redis/redis-read-method/</id>
     <published>2018-03-02T14:28:59.000Z</published>
-    <updated>2018-03-03T08:02:44.000Z</updated>
+    <updated>2018-03-03T08:36:16.000Z</updated>
     
     <content type="html"><![CDATA[<p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。   </p>
-<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：<br>1.png</p>
-<p>解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示：<br>2.png</p>
+<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ... //进入存放redis的文件夹</div><div class="line">wget http://download.redis.io/releases/redis-4.0.8.tar.gz</div><div class="line">tar -zxvf redis-4.0.8.tar.gz</div></pre></td></tr></table></figure>
+<p>解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示： </p>
+<p><img src="/img/redis/2.png" alt="redis source code overview"> </p>
 <h2 id="Redis源码解析"><a href="#Redis源码解析" class="headerlink" title="Redis源码解析"></a>Redis源码解析</h2><p>上图中源码文件很多，必须找到一种合理的顺序来阅读各个文件。<br>网上找到的源码的阅读法。<a href="http://redissrc.readthedocs.io/en/latest/index.html" target="_blank" rel="external">摘自redisredis源码解析</a><br>自底向上：从耦合关系最小的模块开始读，然后逐渐过度到关系紧密的模块。就好像写程序的测试一样，先从单元测试开始，然后才到功能测试。我在刚开始读 Redis 源码的时候，使用的就是这种方法：先从单独的数据结构模块开始，然后再过渡到高层的功能模块。<br>从功能入手：通过文件名（模块名）和函数名，快速定位到一个功能的具体实现，然后追踪整个实现的运作流程，从而了解该功能的实现方式。我在读阻塞列表、数据库这种流程和功能都比较复杂，和其他文件耦合也比较多的模块时，使用的就是这样的方法。<br>自顶向下：从程序的 main() 函数，或者某个特别大的调用者函数为入口，以深度优先或者广度优先的方式阅读它的源码。我在阅读 redis.c/serverCron() 、 redis.c/main() 和 ae.c/aeMain() 这种有明显调用者性质的函数时，使用的就是这样的方法。<br>黄健宏老师推荐的阅读顺序<a href="http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html" target="_blank" rel="external">如何阅读Redis源码?</a><br>通过以上方法，可以将redis源代码进行模块的拆分，由浅入深地阅读。<br>3.png<br>根据上图的模块划分，确定源码的学习路线： </p>
 <h3 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h3><p>阅读redis源码的数据结构部分：<br>redis的内存分配zmalloc.h和zmalloc.c<br>redis的动态字符串实现sds.h和sds.c<br>redis的双端链表实现dict.h和dict.c<br>redis的的字典实现dict.h和dict.c<br>redis的跳跃表实现，redis.h中的zskiplist结构和zskiplistNode结构，以及t_zset.c 中所有以zsl开头的函数，比如zslCreate 、zslInsert 、zslDeleteNode 等等。<br>Redis的HyperLogLog实现，hyperloglog.c 中的 hllhdr 结构， 以及所有以 hll 开头的函数。</p>
 <h3 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h3><p>阅读内存编码数据结构实现：<br>整数集合（intset）数据结构intset.h 和 intset.c<br>压缩列表（zip list）数据结构ziplist.h 和 ziplist.c</p>
@@ -39,8 +41,10 @@
     <summary type="html">
     
       &lt;p&gt;由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。   &lt;/p&gt;
-&lt;h2 id=&quot;Redis源码获取&quot;&gt;&lt;a href=&quot;#Redis源码获取&quot; class=&quot;headerlink&quot; title=&quot;Redis源码获取&quot;&gt;&lt;/a&gt;Redis源码获取&lt;/h2&gt;&lt;p&gt;redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为&lt;a href=&quot;http://download.redis.io/releases/redis-4.0.8.tar.gz&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://download.redis.io/releases/redis-4.0.8.tar.gz&lt;/a&gt;。执行以下命令：&lt;br&gt;1.png&lt;/p&gt;
-&lt;p&gt;解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示：&lt;br&gt;2.png&lt;/p&gt;
+&lt;h2 id=&quot;Redis源码获取&quot;&gt;&lt;a href=&quot;#Redis源码获取&quot; class=&quot;headerlink&quot; title=&quot;Redis源码获取&quot;&gt;&lt;/a&gt;Redis源码获取&lt;/h2&gt;&lt;p&gt;redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为&lt;a href=&quot;http://download.redis.io/releases/redis-4.0.8.tar.gz&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://download.redis.io/releases/redis-4.0.8.tar.gz&lt;/a&gt;。执行以下命令：  &lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; ... //进入存放redis的文件夹&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;wget http://download.redis.io/releases/redis-4.0.8.tar.gz&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;tar -zxvf redis-4.0.8.tar.gz&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示： &lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/redis/2.png&quot; alt=&quot;redis source code overview&quot;&gt; &lt;/p&gt;
 &lt;h2 id=&quot;Redis源码解析&quot;&gt;&lt;a href=&quot;#Redis源码解析&quot; class=&quot;headerlink&quot; title=&quot;Redis源码解析&quot;&gt;&lt;/a&gt;Redis源码解析&lt;/h2&gt;&lt;p&gt;上图中源码文件很多，必须找到一种合理的顺序来阅读各个文件。&lt;br&gt;网上找到的源码的阅读法。&lt;a href=&quot;http://redissrc.readthedocs.io/en/latest/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;摘自redisredis源码解析&lt;/a&gt;&lt;br&gt;自底向上：从耦合关系最小的模块开始读，然后逐渐过度到关系紧密的模块。就好像写程序的测试一样，先从单元测试开始，然后才到功能测试。我在刚开始读 Redis 源码的时候，使用的就是这种方法：先从单独的数据结构模块开始，然后再过渡到高层的功能模块。&lt;br&gt;从功能入手：通过文件名（模块名）和函数名，快速定位到一个功能的具体实现，然后追踪整个实现的运作流程，从而了解该功能的实现方式。我在读阻塞列表、数据库这种流程和功能都比较复杂，和其他文件耦合也比较多的模块时，使用的就是这样的方法。&lt;br&gt;自顶向下：从程序的 main() 函数，或者某个特别大的调用者函数为入口，以深度优先或者广度优先的方式阅读它的源码。我在阅读 redis.c/serverCron() 、 redis.c/main() 和 ae.c/aeMain() 这种有明显调用者性质的函数时，使用的就是这样的方法。&lt;br&gt;黄健宏老师推荐的阅读顺序&lt;a href=&quot;http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;如何阅读Redis源码?&lt;/a&gt;&lt;br&gt;通过以上方法，可以将redis源代码进行模块的拆分，由浅入深地阅读。&lt;br&gt;3.png&lt;br&gt;根据上图的模块划分，确定源码的学习路线： &lt;/p&gt;
 &lt;h3 id=&quot;第一阶段&quot;&gt;&lt;a href=&quot;#第一阶段&quot; class=&quot;headerlink&quot; title=&quot;第一阶段&quot;&gt;&lt;/a&gt;第一阶段&lt;/h3&gt;&lt;p&gt;阅读redis源码的数据结构部分：&lt;br&gt;redis的内存分配zmalloc.h和zmalloc.c&lt;br&gt;redis的动态字符串实现sds.h和sds.c&lt;br&gt;redis的双端链表实现dict.h和dict.c&lt;br&gt;redis的的字典实现dict.h和dict.c&lt;br&gt;redis的跳跃表实现，redis.h中的zskiplist结构和zskiplistNode结构，以及t_zset.c 中所有以zsl开头的函数，比如zslCreate 、zslInsert 、zslDeleteNode 等等。&lt;br&gt;Redis的HyperLogLog实现，hyperloglog.c 中的 hllhdr 结构， 以及所有以 hll 开头的函数。&lt;/p&gt;
 &lt;h3 id=&quot;第二阶段&quot;&gt;&lt;a href=&quot;#第二阶段&quot; class=&quot;headerlink&quot; title=&quot;第二阶段&quot;&gt;&lt;/a&gt;第二阶段&lt;/h3&gt;&lt;p&gt;阅读内存编码数据结构实现：&lt;br&gt;整数集合（intset）数据结构intset.h 和 intset.c&lt;br&gt;压缩列表（zip list）数据结构ziplist.h 和 ziplist.c&lt;/p&gt;
