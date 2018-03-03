@@ -95,18 +95,18 @@
 
 
 
-<meta name="description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。    Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：   123cd ...">
+<meta name="description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。 Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis源码剖析--Redis源码结构">
+<meta property="og:title" content="Redis源码剖析--Redis源码结构及阅读方法">
 <meta property="og:url" content="http://yoursite.com/2018/03/02/redis/redis-read-method/index.html">
 <meta property="og:site_name" content="Ryan&#39;s notes">
-<meta property="og:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。    Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：   123cd ...">
+<meta property="og:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。 Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：">
 <meta property="og:image" content="http://yoursite.com/img/redis/2.png">
-<meta property="og:updated_time" content="2018-03-03T08:36:16.000Z">
+<meta property="og:updated_time" content="2018-03-03T10:37:05.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis源码剖析--Redis源码结构">
-<meta name="twitter:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。    Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：   123cd ...">
+<meta name="twitter:title" content="Redis源码剖析--Redis源码结构及阅读方法">
+<meta name="twitter:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。 Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：">
 <meta name="twitter:image" content="http://yoursite.com/img/redis/2.png">
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>Redis源码剖析--Redis源码结构 | Ryan's notes</title>
+  <title>Redis源码剖析--Redis源码结构及阅读方法 | Ryan's notes</title>
   
 
 
@@ -325,7 +325,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis源码剖析--Redis源码结构</h1>
+          <h1 class="post-title" itemprop="name headline">Redis源码剖析--Redis源码结构及阅读方法</h1>
         
 
         <div class="post-meta">
@@ -337,7 +337,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T22:28:59+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T00:00:00+08:00">
                 2018-03-02
               </time>
             
@@ -377,7 +377,7 @@
 
           
           
-             <span id="/2018/03/02/redis/redis-read-method/" class="leancloud_visitors" data-flag-title="Redis源码剖析--Redis源码结构">
+             <span id="/2018/03/02/redis/redis-read-method/" class="leancloud_visitors" data-flag-title="Redis源码剖析--Redis源码结构及阅读方法">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -405,20 +405,76 @@
       
 
       
-        <p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。   </p>
-<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：  </p>
+        <p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。</p>
+<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：<br><a id="more"></a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ... //进入存放redis的文件夹</div><div class="line">wget http://download.redis.io/releases/redis-4.0.8.tar.gz</div><div class="line">tar -zxvf redis-4.0.8.tar.gz</div></pre></td></tr></table></figure>
 <p>解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示： </p>
 <p><img src="/img/redis/2.png" alt="redis source code overview"> </p>
-<h2 id="Redis源码解析"><a href="#Redis源码解析" class="headerlink" title="Redis源码解析"></a>Redis源码解析</h2><p>上图中源码文件很多，必须找到一种合理的顺序来阅读各个文件。<br>网上找到的源码的阅读法。<a href="http://redissrc.readthedocs.io/en/latest/index.html" target="_blank" rel="external">摘自redisredis源码解析</a><br>自底向上：从耦合关系最小的模块开始读，然后逐渐过度到关系紧密的模块。就好像写程序的测试一样，先从单元测试开始，然后才到功能测试。我在刚开始读 Redis 源码的时候，使用的就是这种方法：先从单独的数据结构模块开始，然后再过渡到高层的功能模块。<br>从功能入手：通过文件名（模块名）和函数名，快速定位到一个功能的具体实现，然后追踪整个实现的运作流程，从而了解该功能的实现方式。我在读阻塞列表、数据库这种流程和功能都比较复杂，和其他文件耦合也比较多的模块时，使用的就是这样的方法。<br>自顶向下：从程序的 main() 函数，或者某个特别大的调用者函数为入口，以深度优先或者广度优先的方式阅读它的源码。我在阅读 redis.c/serverCron() 、 redis.c/main() 和 ae.c/aeMain() 这种有明显调用者性质的函数时，使用的就是这样的方法。<br>黄健宏老师推荐的阅读顺序<a href="http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html" target="_blank" rel="external">如何阅读Redis源码?</a><br>通过以上方法，可以将redis源代码进行模块的拆分，由浅入深地阅读。<br>3.png<br>根据上图的模块划分，确定源码的学习路线： </p>
-<h3 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h3><p>阅读redis源码的数据结构部分：<br>redis的内存分配zmalloc.h和zmalloc.c<br>redis的动态字符串实现sds.h和sds.c<br>redis的双端链表实现dict.h和dict.c<br>redis的的字典实现dict.h和dict.c<br>redis的跳跃表实现，redis.h中的zskiplist结构和zskiplistNode结构，以及t_zset.c 中所有以zsl开头的函数，比如zslCreate 、zslInsert 、zslDeleteNode 等等。<br>Redis的HyperLogLog实现，hyperloglog.c 中的 hllhdr 结构， 以及所有以 hll 开头的函数。</p>
-<h3 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h3><p>阅读内存编码数据结构实现：<br>整数集合（intset）数据结构intset.h 和 intset.c<br>压缩列表（zip list）数据结构ziplist.h 和 ziplist.c</p>
-<h3 id="第三阶段"><a href="#第三阶段" class="headerlink" title="第三阶段"></a>第三阶段</h3><p>阅读数据类型实现：<br>redis 的对象（类型）系统实现object.c<br>字符串键的实现t_string.c<br>列表键的实现 t_list.c<br>散列键的实现 t_hash.c<br>集合键的实现 t_set.c<br>有序集合键的实现 t_zset.c 中除 zsl 开头的函数之外的所有函数<br>HyperLogLog 键的实现 hyperloglog.c 中所有以 pf 开头的函数</p>
-<h3 id="第四阶段"><a href="#第四阶段" class="headerlink" title="第四阶段"></a>第四阶段</h3><p>阅读Redis数据库的实现：<br>redis的数据库实现 redis.h文件中的redisDb结构，以及db.c文件<br>redis的数据库通知功能实现 notify.c<br>redis的RDB持久化实现代码 rdb.c<br>redis的AOF持久化 aof.c<br>以及一些独立功能模块的实现</p>
-<p>发布与订阅功能的实现 redis.h文件的pubsubPattern结构，以及pubsub.c文件<br>事务功能的实现 redis.h文件的multiState结构以及multiCmd结构，multi.c文件<br>SORT 命令的实现 sort.c<br>GETBIT 、 SETBIT 等二进制位操作命令的实现 bitops.c</p>
-<h3 id="第五阶段"><a href="#第五阶段" class="headerlink" title="第五阶段"></a>第五阶段</h3><p>阅读客户端和服务器的相关代码：<br>redis的事件处理模块 ae.c/ae_epoll.c/ae_evport.c/ae_kqueue.c/ae_select.c<br>redis的网路链接库 anet.c和networking.c<br>redis的服务器端 server.c<br>redis的客户端 redis-cli.c<br>以及一些独立功能模块的实现<br>lua脚本 scripting.c<br>慢查询 slowlog.c<br>监视 monitor.c</p>
-<h3 id="第六阶段"><a href="#第六阶段" class="headerlink" title="第六阶段"></a>第六阶段</h3><p>阅读Redis多机功能的实现<br>redis的复制功能 replication.c<br>redis sentinel sentinel.c<br>redis的集群 cluster.c</p>
-<a id="more"></a>
+<h2 id="Redis源码解析"><a href="#Redis源码解析" class="headerlink" title="Redis源码解析"></a>Redis源码解析</h2><p>上图src目录下源码文件很多，必须找到一种合理的顺序来阅读各个文件。   </p>
+<p>网上找到的源码的阅读法。（摘自<a href="http://redissrc.readthedocs.io/en/latest/index.html" target="_blank" rel="external">redis源码解析</a>)   </p>
+<ul>
+<li>自底向上：从耦合关系最小的模块开始读，然后逐渐过度到关系紧密的模块。就好像写程序的测试一样，先从单元测试开始，然后才到功能测试。</li>
+<li>从功能入手：通过文件名（模块名）和函数名，快速定位到一个功能的具体实现，然后追踪整个实现的运作流程，从而了解该功能的实现方式。   </li>
+<li>自顶向下：从程序的main()函数，或者某个特别大的调用者函数为入口，以深度优先或者广度优先的方式阅读它的源码。</li>
+</ul>
+<p>根据黄健宏老师推荐的阅读顺序（<a href="http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html" target="_blank" rel="external">如何阅读Redis源码?</a>），可以将redis源代码进行模块的拆分，按阶段由浅入深地阅读学习。   </p>
+<h3 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h3><p>阅读redis源码的数据结构部分：</p>
+<ul>
+<li>redis的内存分配 zmalloc.h和zmalloc.c</li>
+<li>redis的动态字符串实现 sds.h和sds.c</li>
+<li>redis的双端链表实现 adlist.h和adlist.c</li>
+<li>redis的的字典实现 dict.h和dict.c</li>
+<li>redis的跳跃表实现 server.h中的zskiplist结构和zskiplistNode结构，以及t_zset.c中所有以zsl开头的函数，比如zslCreate 、zslInsert 、zslDeleteNode等等</li>
+<li>Redis的HyperLogLog实现 hyperloglog.c中的hllhdr结构，及所有以hll开头的函数</li>
+</ul>
+<h3 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h3><p>阅读内存编码数据结构实现：</p>
+<ul>
+<li>整数集合（intset） intset.h和intset.c</li>
+<li>压缩列表（zip list） ziplist.h和ziplist.c</li>
+</ul>
+<h3 id="第三阶段"><a href="#第三阶段" class="headerlink" title="第三阶段"></a>第三阶段</h3><p>阅读数据类型实现：</p>
+<ul>
+<li>redis的对象（类型）系统实现 object.c</li>
+<li>字符串键的实现 t_string.c</li>
+<li>列表键的实现 t_list.c</li>
+<li>散列键的实现 t_hash.c</li>
+<li>集合键的实现 t_set.c</li>
+<li>有序集合键的实现 t_zset.c中除zsl开头的函数之外的所有函数</li>
+<li>HyperLogLog键的实现 hyperloglog.c中所有以pf开头的函数</li>
+</ul>
+<h3 id="第四阶段"><a href="#第四阶段" class="headerlink" title="第四阶段"></a>第四阶段</h3><p>阅读Redis数据库的实现：</p>
+<ul>
+<li>redis的数据库实现 server.h文件中的redisDb结构，以及db.c文件</li>
+<li>redis的数据库通知功能实现 notify.c</li>
+<li>redis的RDB持久化实现代码 rdb.c</li>
+<li>redis的AOF持久化 aof.c</li>
+</ul>
+<p>以及一些独立功能模块的实现</p>
+<ul>
+<li>发布与订阅功能的实现 server.h文件的pubsubPattern结构，以及pubsub.c文件</li>
+<li>事务功能的实现 server.h文件的multiState结构以及multiCmd结构，multi.c文件</li>
+<li>SORT命令的实现 sort.c</li>
+<li>GETBIT 、 SETBIT等二进制位操作命令的实现 bitops.c</li>
+</ul>
+<h3 id="第五阶段"><a href="#第五阶段" class="headerlink" title="第五阶段"></a>第五阶段</h3><p>阅读客户端和服务器的相关代码：</p>
+<ul>
+<li>redis的事件处理模块 ae.c/ae_epoll.c/ae_evport.c/ae_kqueue.c/ae_select.c</li>
+<li>redis的网路链接库 anet.c和networking.c</li>
+<li>redis的服务器端 server.c</li>
+<li>redis的客户端 redis-cli.c</li>
+</ul>
+<p>以及一些独立功能模块的实现</p>
+<ul>
+<li>lua脚本 scripting.c</li>
+<li>慢查询 slowlog.c</li>
+<li>监视 monitor.c</li>
+</ul>
+<h3 id="第六阶段"><a href="#第六阶段" class="headerlink" title="第六阶段"></a>第六阶段</h3><p>阅读Redis多机功能的实现:</p>
+<ul>
+<li>redis的复制功能 replication.c</li>
+<li>redis sentinel sentinel.c</li>
+<li>redis的集群 cluster.c</li>
+</ul>
 
       
     </div>

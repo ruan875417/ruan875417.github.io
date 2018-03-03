@@ -322,7 +322,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/02/redis/redis-read-method/" itemprop="url">Redis源码剖析--Redis源码结构</a></h1>
+                <a class="post-title-link" href="/2018/03/02/redis/redis-read-method/" itemprop="url">Redis源码剖析--Redis源码结构及阅读方法</a></h1>
         
 
         <div class="post-meta">
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T22:28:59+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T00:00:00+08:00">
                 2018-03-02
               </time>
             
@@ -374,7 +374,7 @@
 
           
           
-             <span id="/2018/03/02/redis/redis-read-method/" class="leancloud_visitors" data-flag-title="Redis源码剖析--Redis源码结构">
+             <span id="/2018/03/02/redis/redis-read-method/" class="leancloud_visitors" data-flag-title="Redis源码剖析--Redis源码结构及阅读方法">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -403,19 +403,8 @@
 
       
         
-          <p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。   </p>
-<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：  </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ... //进入存放redis的文件夹</div><div class="line">wget http://download.redis.io/releases/redis-4.0.8.tar.gz</div><div class="line">tar -zxvf redis-4.0.8.tar.gz</div></pre></td></tr></table></figure>
-<p>解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示： </p>
-<p><img src="/img/redis/2.png" alt="redis source code overview"> </p>
-<h2 id="Redis源码解析"><a href="#Redis源码解析" class="headerlink" title="Redis源码解析"></a>Redis源码解析</h2><p>上图中源码文件很多，必须找到一种合理的顺序来阅读各个文件。<br>网上找到的源码的阅读法。<a href="http://redissrc.readthedocs.io/en/latest/index.html" target="_blank" rel="external">摘自redisredis源码解析</a><br>自底向上：从耦合关系最小的模块开始读，然后逐渐过度到关系紧密的模块。就好像写程序的测试一样，先从单元测试开始，然后才到功能测试。我在刚开始读 Redis 源码的时候，使用的就是这种方法：先从单独的数据结构模块开始，然后再过渡到高层的功能模块。<br>从功能入手：通过文件名（模块名）和函数名，快速定位到一个功能的具体实现，然后追踪整个实现的运作流程，从而了解该功能的实现方式。我在读阻塞列表、数据库这种流程和功能都比较复杂，和其他文件耦合也比较多的模块时，使用的就是这样的方法。<br>自顶向下：从程序的 main() 函数，或者某个特别大的调用者函数为入口，以深度优先或者广度优先的方式阅读它的源码。我在阅读 redis.c/serverCron() 、 redis.c/main() 和 ae.c/aeMain() 这种有明显调用者性质的函数时，使用的就是这样的方法。<br>黄健宏老师推荐的阅读顺序<a href="http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html" target="_blank" rel="external">如何阅读Redis源码?</a><br>通过以上方法，可以将redis源代码进行模块的拆分，由浅入深地阅读。<br>3.png<br>根据上图的模块划分，确定源码的学习路线： </p>
-<h3 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h3><p>阅读redis源码的数据结构部分：<br>redis的内存分配zmalloc.h和zmalloc.c<br>redis的动态字符串实现sds.h和sds.c<br>redis的双端链表实现dict.h和dict.c<br>redis的的字典实现dict.h和dict.c<br>redis的跳跃表实现，redis.h中的zskiplist结构和zskiplistNode结构，以及t_zset.c 中所有以zsl开头的函数，比如zslCreate 、zslInsert 、zslDeleteNode 等等。<br>Redis的HyperLogLog实现，hyperloglog.c 中的 hllhdr 结构， 以及所有以 hll 开头的函数。</p>
-<h3 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h3><p>阅读内存编码数据结构实现：<br>整数集合（intset）数据结构intset.h 和 intset.c<br>压缩列表（zip list）数据结构ziplist.h 和 ziplist.c</p>
-<h3 id="第三阶段"><a href="#第三阶段" class="headerlink" title="第三阶段"></a>第三阶段</h3><p>阅读数据类型实现：<br>redis 的对象（类型）系统实现object.c<br>字符串键的实现t_string.c<br>列表键的实现 t_list.c<br>散列键的实现 t_hash.c<br>集合键的实现 t_set.c<br>有序集合键的实现 t_zset.c 中除 zsl 开头的函数之外的所有函数<br>HyperLogLog 键的实现 hyperloglog.c 中所有以 pf 开头的函数</p>
-<h3 id="第四阶段"><a href="#第四阶段" class="headerlink" title="第四阶段"></a>第四阶段</h3><p>阅读Redis数据库的实现：<br>redis的数据库实现 redis.h文件中的redisDb结构，以及db.c文件<br>redis的数据库通知功能实现 notify.c<br>redis的RDB持久化实现代码 rdb.c<br>redis的AOF持久化 aof.c<br>以及一些独立功能模块的实现</p>
-<p>发布与订阅功能的实现 redis.h文件的pubsubPattern结构，以及pubsub.c文件<br>事务功能的实现 redis.h文件的multiState结构以及multiCmd结构，multi.c文件<br>SORT 命令的实现 sort.c<br>GETBIT 、 SETBIT 等二进制位操作命令的实现 bitops.c</p>
-<h3 id="第五阶段"><a href="#第五阶段" class="headerlink" title="第五阶段"></a>第五阶段</h3><p>阅读客户端和服务器的相关代码：<br>redis的事件处理模块 ae.c/ae_epoll.c/ae_evport.c/ae_kqueue.c/ae_select.c<br>redis的网路链接库 anet.c和networking.c<br>redis的服务器端 server.c<br>redis的客户端 redis-cli.c<br>以及一些独立功能模块的实现<br>lua脚本 scripting.c<br>慢查询 slowlog.c<br>监视 monitor.c</p>
-<h3 id="第六阶段"><a href="#第六阶段" class="headerlink" title="第六阶段"></a>第六阶段</h3><p>阅读Redis多机功能的实现<br>redis的复制功能 replication.c<br>redis sentinel sentinel.c<br>redis的集群 cluster.c</p>
+          <p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。</p>
+<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/03/02/redis/redis-read-method/#more" rel="contents">
@@ -495,7 +484,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-02T14:04:24+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-02T00:00:00+08:00">
                 2017-07-02
               </time>
             
@@ -564,9 +553,7 @@
 
       
         
-          <h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p><a href="http://opiece.me/2015/04/09/hexo-guide/" target="_blank" rel="external">使用Hexo搭建个人博客(基于hexo3.0)</a><br><a href="http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/" target="_blank" rel="external">将hexo博客同时托管到github和coding</a><br><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档</a><br><a href="http://theme-next.iissnan.com" target="_blank" rel="external">next主题配置官网</a><br><a href="http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/" target="_blank" rel="external">next主题显示RSS配置</a><br><a href="http://www.maoxuner.cn/2017/03/10/hexo-skip-render.html" target="_blank" rel="external">Hexo渲染时排除部分文件或目录</a>   </p>
-<h2 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h2><p><a href="http://blog.leanote.com/post/freewalk/Markdown-语法手册" target="_blank" rel="external">Markdown语法手册</a><br><a href="http://wowubuntu.com/markdown" target="_blank" rel="external">Markdown语法说明</a><br><a href="http://einverne.github.io/markdown-style-guide/zh.html" target="_blank" rel="external">Markdown书写风格指南（中文）</a><br><a href="https://github.com/cirosantilli/markdown-style-guide/blob/gh-pages/index.md" target="_blank" rel="external">Markdown书写风格指南（英文）</a>     </p>
-<h2 id="GitBook"><a href="#GitBook" class="headerlink" title="GitBook"></a>GitBook</h2><p><a href="http://gitbook.zhangjikai.com" target="_blank" rel="external">GitBook 使用教程</a><br><a href="https://toolchain.gitbook.com" target="_blank" rel="external">GitBook Toolchain Documentation</a>   </p>
+          <h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p><a href="http://opiece.me/2015/04/09/hexo-guide/" target="_blank" rel="external">使用Hexo搭建个人博客(基于hexo3.0)</a><br><a href="http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/" target="_blank" rel="external">将hexo博客同时托管到github和coding</a><br><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档</a><br><a href="http://theme-next.iissnan.com" target="_blank" rel="external">next主题配置官网</a><br><a href="http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/" target="_blank" rel="external">next主题显示RSS配置</a><br><a href="http://www.maoxuner.cn/2017/03/10/hexo-skip-render.html" target="_blank" rel="external">Hexo渲染时排除部分文件或目录</a><br><a href="http://www.5isjyx.com/coding/201704/nextreadthefulltext.html" target="_blank" rel="external">next主题怎么让首页不显示全文</a><br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/07/02/read/tools-read/#more" rel="contents">
@@ -646,7 +633,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-25T00:02:04+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-25T00:00:00+08:00">
                 2017-06-25
               </time>
             
@@ -715,15 +702,7 @@
 
       
         
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/06/25/hello-world/#more" rel="contents">
