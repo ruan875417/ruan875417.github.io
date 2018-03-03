@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-07-15T13:30:41.000Z</updated>
+  <updated>2018-03-03T08:02:44.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,50 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redis源码剖析--Redis源码结构</title>
+    <link href="http://yoursite.com/2018/03/02/redis/redis-read-method/"/>
+    <id>http://yoursite.com/2018/03/02/redis/redis-read-method/</id>
+    <published>2018-03-02T14:28:59.000Z</published>
+    <updated>2018-03-03T08:02:44.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。   </p>
+<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：<br>1.png</p>
+<p>解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示：<br>2.png</p>
+<h2 id="Redis源码解析"><a href="#Redis源码解析" class="headerlink" title="Redis源码解析"></a>Redis源码解析</h2><p>上图中源码文件很多，必须找到一种合理的顺序来阅读各个文件。<br>网上找到的源码的阅读法。<a href="http://redissrc.readthedocs.io/en/latest/index.html" target="_blank" rel="external">摘自redisredis源码解析</a><br>自底向上：从耦合关系最小的模块开始读，然后逐渐过度到关系紧密的模块。就好像写程序的测试一样，先从单元测试开始，然后才到功能测试。我在刚开始读 Redis 源码的时候，使用的就是这种方法：先从单独的数据结构模块开始，然后再过渡到高层的功能模块。<br>从功能入手：通过文件名（模块名）和函数名，快速定位到一个功能的具体实现，然后追踪整个实现的运作流程，从而了解该功能的实现方式。我在读阻塞列表、数据库这种流程和功能都比较复杂，和其他文件耦合也比较多的模块时，使用的就是这样的方法。<br>自顶向下：从程序的 main() 函数，或者某个特别大的调用者函数为入口，以深度优先或者广度优先的方式阅读它的源码。我在阅读 redis.c/serverCron() 、 redis.c/main() 和 ae.c/aeMain() 这种有明显调用者性质的函数时，使用的就是这样的方法。<br>黄健宏老师推荐的阅读顺序<a href="http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html" target="_blank" rel="external">如何阅读Redis源码?</a><br>通过以上方法，可以将redis源代码进行模块的拆分，由浅入深地阅读。<br>3.png<br>根据上图的模块划分，确定源码的学习路线： </p>
+<h3 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h3><p>阅读redis源码的数据结构部分：<br>redis的内存分配zmalloc.h和zmalloc.c<br>redis的动态字符串实现sds.h和sds.c<br>redis的双端链表实现dict.h和dict.c<br>redis的的字典实现dict.h和dict.c<br>redis的跳跃表实现，redis.h中的zskiplist结构和zskiplistNode结构，以及t_zset.c 中所有以zsl开头的函数，比如zslCreate 、zslInsert 、zslDeleteNode 等等。<br>Redis的HyperLogLog实现，hyperloglog.c 中的 hllhdr 结构， 以及所有以 hll 开头的函数。</p>
+<h3 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h3><p>阅读内存编码数据结构实现：<br>整数集合（intset）数据结构intset.h 和 intset.c<br>压缩列表（zip list）数据结构ziplist.h 和 ziplist.c</p>
+<h3 id="第三阶段"><a href="#第三阶段" class="headerlink" title="第三阶段"></a>第三阶段</h3><p>阅读数据类型实现：<br>redis 的对象（类型）系统实现object.c<br>字符串键的实现t_string.c<br>列表键的实现 t_list.c<br>散列键的实现 t_hash.c<br>集合键的实现 t_set.c<br>有序集合键的实现 t_zset.c 中除 zsl 开头的函数之外的所有函数<br>HyperLogLog 键的实现 hyperloglog.c 中所有以 pf 开头的函数</p>
+<h3 id="第四阶段"><a href="#第四阶段" class="headerlink" title="第四阶段"></a>第四阶段</h3><p>阅读Redis数据库的实现：<br>redis的数据库实现 redis.h文件中的redisDb结构，以及db.c文件<br>redis的数据库通知功能实现 notify.c<br>redis的RDB持久化实现代码 rdb.c<br>redis的AOF持久化 aof.c<br>以及一些独立功能模块的实现</p>
+<p>发布与订阅功能的实现 redis.h文件的pubsubPattern结构，以及pubsub.c文件<br>事务功能的实现 redis.h文件的multiState结构以及multiCmd结构，multi.c文件<br>SORT 命令的实现 sort.c<br>GETBIT 、 SETBIT 等二进制位操作命令的实现 bitops.c</p>
+<h3 id="第五阶段"><a href="#第五阶段" class="headerlink" title="第五阶段"></a>第五阶段</h3><p>阅读客户端和服务器的相关代码：<br>redis的事件处理模块 ae.c/ae_epoll.c/ae_evport.c/ae_kqueue.c/ae_select.c<br>redis的网路链接库 anet.c和networking.c<br>redis的服务器端 server.c<br>redis的客户端 redis-cli.c<br>以及一些独立功能模块的实现<br>lua脚本 scripting.c<br>慢查询 slowlog.c<br>监视 monitor.c</p>
+<h3 id="第六阶段"><a href="#第六阶段" class="headerlink" title="第六阶段"></a>第六阶段</h3><p>阅读Redis多机功能的实现<br>redis的复制功能 replication.c<br>redis sentinel sentinel.c<br>redis的集群 cluster.c</p>
+<a id="more"></a>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。   &lt;/p&gt;
+&lt;h2 id=&quot;Redis源码获取&quot;&gt;&lt;a href=&quot;#Redis源码获取&quot; class=&quot;headerlink&quot; title=&quot;Redis源码获取&quot;&gt;&lt;/a&gt;Redis源码获取&lt;/h2&gt;&lt;p&gt;redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为&lt;a href=&quot;http://download.redis.io/releases/redis-4.0.8.tar.gz&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://download.redis.io/releases/redis-4.0.8.tar.gz&lt;/a&gt;。执行以下命令：&lt;br&gt;1.png&lt;/p&gt;
+&lt;p&gt;解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示：&lt;br&gt;2.png&lt;/p&gt;
+&lt;h2 id=&quot;Redis源码解析&quot;&gt;&lt;a href=&quot;#Redis源码解析&quot; class=&quot;headerlink&quot; title=&quot;Redis源码解析&quot;&gt;&lt;/a&gt;Redis源码解析&lt;/h2&gt;&lt;p&gt;上图中源码文件很多，必须找到一种合理的顺序来阅读各个文件。&lt;br&gt;网上找到的源码的阅读法。&lt;a href=&quot;http://redissrc.readthedocs.io/en/latest/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;摘自redisredis源码解析&lt;/a&gt;&lt;br&gt;自底向上：从耦合关系最小的模块开始读，然后逐渐过度到关系紧密的模块。就好像写程序的测试一样，先从单元测试开始，然后才到功能测试。我在刚开始读 Redis 源码的时候，使用的就是这种方法：先从单独的数据结构模块开始，然后再过渡到高层的功能模块。&lt;br&gt;从功能入手：通过文件名（模块名）和函数名，快速定位到一个功能的具体实现，然后追踪整个实现的运作流程，从而了解该功能的实现方式。我在读阻塞列表、数据库这种流程和功能都比较复杂，和其他文件耦合也比较多的模块时，使用的就是这样的方法。&lt;br&gt;自顶向下：从程序的 main() 函数，或者某个特别大的调用者函数为入口，以深度优先或者广度优先的方式阅读它的源码。我在阅读 redis.c/serverCron() 、 redis.c/main() 和 ae.c/aeMain() 这种有明显调用者性质的函数时，使用的就是这样的方法。&lt;br&gt;黄健宏老师推荐的阅读顺序&lt;a href=&quot;http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;如何阅读Redis源码?&lt;/a&gt;&lt;br&gt;通过以上方法，可以将redis源代码进行模块的拆分，由浅入深地阅读。&lt;br&gt;3.png&lt;br&gt;根据上图的模块划分，确定源码的学习路线： &lt;/p&gt;
+&lt;h3 id=&quot;第一阶段&quot;&gt;&lt;a href=&quot;#第一阶段&quot; class=&quot;headerlink&quot; title=&quot;第一阶段&quot;&gt;&lt;/a&gt;第一阶段&lt;/h3&gt;&lt;p&gt;阅读redis源码的数据结构部分：&lt;br&gt;redis的内存分配zmalloc.h和zmalloc.c&lt;br&gt;redis的动态字符串实现sds.h和sds.c&lt;br&gt;redis的双端链表实现dict.h和dict.c&lt;br&gt;redis的的字典实现dict.h和dict.c&lt;br&gt;redis的跳跃表实现，redis.h中的zskiplist结构和zskiplistNode结构，以及t_zset.c 中所有以zsl开头的函数，比如zslCreate 、zslInsert 、zslDeleteNode 等等。&lt;br&gt;Redis的HyperLogLog实现，hyperloglog.c 中的 hllhdr 结构， 以及所有以 hll 开头的函数。&lt;/p&gt;
+&lt;h3 id=&quot;第二阶段&quot;&gt;&lt;a href=&quot;#第二阶段&quot; class=&quot;headerlink&quot; title=&quot;第二阶段&quot;&gt;&lt;/a&gt;第二阶段&lt;/h3&gt;&lt;p&gt;阅读内存编码数据结构实现：&lt;br&gt;整数集合（intset）数据结构intset.h 和 intset.c&lt;br&gt;压缩列表（zip list）数据结构ziplist.h 和 ziplist.c&lt;/p&gt;
+&lt;h3 id=&quot;第三阶段&quot;&gt;&lt;a href=&quot;#第三阶段&quot; class=&quot;headerlink&quot; title=&quot;第三阶段&quot;&gt;&lt;/a&gt;第三阶段&lt;/h3&gt;&lt;p&gt;阅读数据类型实现：&lt;br&gt;redis 的对象（类型）系统实现object.c&lt;br&gt;字符串键的实现t_string.c&lt;br&gt;列表键的实现 t_list.c&lt;br&gt;散列键的实现 t_hash.c&lt;br&gt;集合键的实现 t_set.c&lt;br&gt;有序集合键的实现 t_zset.c 中除 zsl 开头的函数之外的所有函数&lt;br&gt;HyperLogLog 键的实现 hyperloglog.c 中所有以 pf 开头的函数&lt;/p&gt;
+&lt;h3 id=&quot;第四阶段&quot;&gt;&lt;a href=&quot;#第四阶段&quot; class=&quot;headerlink&quot; title=&quot;第四阶段&quot;&gt;&lt;/a&gt;第四阶段&lt;/h3&gt;&lt;p&gt;阅读Redis数据库的实现：&lt;br&gt;redis的数据库实现 redis.h文件中的redisDb结构，以及db.c文件&lt;br&gt;redis的数据库通知功能实现 notify.c&lt;br&gt;redis的RDB持久化实现代码 rdb.c&lt;br&gt;redis的AOF持久化 aof.c&lt;br&gt;以及一些独立功能模块的实现&lt;/p&gt;
+&lt;p&gt;发布与订阅功能的实现 redis.h文件的pubsubPattern结构，以及pubsub.c文件&lt;br&gt;事务功能的实现 redis.h文件的multiState结构以及multiCmd结构，multi.c文件&lt;br&gt;SORT 命令的实现 sort.c&lt;br&gt;GETBIT 、 SETBIT 等二进制位操作命令的实现 bitops.c&lt;/p&gt;
+&lt;h3 id=&quot;第五阶段&quot;&gt;&lt;a href=&quot;#第五阶段&quot; class=&quot;headerlink&quot; title=&quot;第五阶段&quot;&gt;&lt;/a&gt;第五阶段&lt;/h3&gt;&lt;p&gt;阅读客户端和服务器的相关代码：&lt;br&gt;redis的事件处理模块 ae.c/ae_epoll.c/ae_evport.c/ae_kqueue.c/ae_select.c&lt;br&gt;redis的网路链接库 anet.c和networking.c&lt;br&gt;redis的服务器端 server.c&lt;br&gt;redis的客户端 redis-cli.c&lt;br&gt;以及一些独立功能模块的实现&lt;br&gt;lua脚本 scripting.c&lt;br&gt;慢查询 slowlog.c&lt;br&gt;监视 monitor.c&lt;/p&gt;
+&lt;h3 id=&quot;第六阶段&quot;&gt;&lt;a href=&quot;#第六阶段&quot; class=&quot;headerlink&quot; title=&quot;第六阶段&quot;&gt;&lt;/a&gt;第六阶段&lt;/h3&gt;&lt;p&gt;阅读Redis多机功能的实现&lt;br&gt;redis的复制功能 replication.c&lt;br&gt;redis sentinel sentinel.c&lt;br&gt;redis的集群 cluster.c&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
+    
+    
+      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>读过的文章</title>
