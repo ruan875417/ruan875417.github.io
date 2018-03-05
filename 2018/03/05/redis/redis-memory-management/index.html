@@ -95,17 +95,17 @@
 
 
 
-<meta name="description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。    Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：1.png 解压后进入r">
+<meta name="description" content="redis使用c语言编写，而C语言没有垃圾回收机制，所有的内存分配和释放都要手动管理。Redis在实现中封装了C语言的malloc,calloc,realloc和free函数，加上一些异常处理和内存统计功能来对自己的内存进行管理，主要实现在zmalloc.h和zmalloc.c中。">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis源码剖析--Redis源码结构">
-<meta property="og:url" content="http://yoursite.com/2018/03/02/redis/redis-read-method/index.html">
+<meta property="og:title" content="Redis源码剖析--Redis内存管理">
+<meta property="og:url" content="http://yoursite.com/2018/03/05/redis/redis-memory-management/index.html">
 <meta property="og:site_name" content="Ryan&#39;s notes">
-<meta property="og:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。    Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：1.png 解压后进入r">
-<meta property="og:updated_time" content="2018-03-03T08:02:44.000Z">
+<meta property="og:description" content="redis使用c语言编写，而C语言没有垃圾回收机制，所有的内存分配和释放都要手动管理。Redis在实现中封装了C语言的malloc,calloc,realloc和free函数，加上一些异常处理和内存统计功能来对自己的内存进行管理，主要实现在zmalloc.h和zmalloc.c中。">
+<meta property="og:updated_time" content="2018-03-05T15:06:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis源码剖析--Redis源码结构">
-<meta name="twitter:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。    Redis源码获取redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为http://download.redis.io/releases/redis-4.0.8.tar.gz。执行以下命令：1.png 解压后进入r">
+<meta name="twitter:title" content="Redis源码剖析--Redis内存管理">
+<meta name="twitter:description" content="redis使用c语言编写，而C语言没有垃圾回收机制，所有的内存分配和释放都要手动管理。Redis在实现中封装了C语言的malloc,calloc,realloc和free函数，加上一些异常处理和内存统计功能来对自己的内存进行管理，主要实现在zmalloc.h和zmalloc.c中。">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/02/redis/redis-read-method/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/05/redis/redis-memory-management/"/>
 
 
 
 
 
-  <title>Redis源码剖析--Redis源码结构 | Ryan's notes</title>
+  <title>Redis源码剖析--Redis内存管理 | Ryan's notes</title>
   
 
 
@@ -306,7 +306,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/redis/redis-read-method/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/05/redis/redis-memory-management/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Ruan">
@@ -323,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis源码剖析--Redis源码结构</h1>
+          <h1 class="post-title" itemprop="name headline">Redis源码剖析--Redis内存管理</h1>
         
 
         <div class="post-meta">
@@ -335,8 +335,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T22:28:59+08:00">
-                2018-03-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-05T00:00:00+08:00">
+                2018-03-05
               </time>
             
 
@@ -375,7 +375,7 @@
 
           
           
-             <span id="/2018/03/02/redis/redis-read-method/" class="leancloud_visitors" data-flag-title="Redis源码剖析--Redis源码结构">
+             <span id="/2018/03/05/redis/redis-memory-management/" class="leancloud_visitors" data-flag-title="Redis源码剖析--Redis内存管理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -403,22 +403,24 @@
       
 
       
-        <p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。   </p>
-<h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：<br>1.png</p>
-<p>解压后进入redis-4.0.8目录下src文件夹，所有的源码如下所示：<br>2.png</p>
-<h2 id="Redis源码解析"><a href="#Redis源码解析" class="headerlink" title="Redis源码解析"></a>Redis源码解析</h2><p>上图中源码文件很多，必须找到一种合理的顺序来阅读各个文件。<br>网上找到的源码的阅读法。<a href="http://redissrc.readthedocs.io/en/latest/index.html" target="_blank" rel="external">摘自redisredis源码解析</a><br>自底向上：从耦合关系最小的模块开始读，然后逐渐过度到关系紧密的模块。就好像写程序的测试一样，先从单元测试开始，然后才到功能测试。我在刚开始读 Redis 源码的时候，使用的就是这种方法：先从单独的数据结构模块开始，然后再过渡到高层的功能模块。<br>从功能入手：通过文件名（模块名）和函数名，快速定位到一个功能的具体实现，然后追踪整个实现的运作流程，从而了解该功能的实现方式。我在读阻塞列表、数据库这种流程和功能都比较复杂，和其他文件耦合也比较多的模块时，使用的就是这样的方法。<br>自顶向下：从程序的 main() 函数，或者某个特别大的调用者函数为入口，以深度优先或者广度优先的方式阅读它的源码。我在阅读 redis.c/serverCron() 、 redis.c/main() 和 ae.c/aeMain() 这种有明显调用者性质的函数时，使用的就是这样的方法。<br>黄健宏老师推荐的阅读顺序<a href="http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html" target="_blank" rel="external">如何阅读Redis源码?</a><br>通过以上方法，可以将redis源代码进行模块的拆分，由浅入深地阅读。<br>3.png<br>根据上图的模块划分，确定源码的学习路线： </p>
-<h3 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h3><p>阅读redis源码的数据结构部分：<br>redis的内存分配zmalloc.h和zmalloc.c<br>redis的动态字符串实现sds.h和sds.c<br>redis的双端链表实现dict.h和dict.c<br>redis的的字典实现dict.h和dict.c<br>redis的跳跃表实现，redis.h中的zskiplist结构和zskiplistNode结构，以及t_zset.c 中所有以zsl开头的函数，比如zslCreate 、zslInsert 、zslDeleteNode 等等。<br>Redis的HyperLogLog实现，hyperloglog.c 中的 hllhdr 结构， 以及所有以 hll 开头的函数。</p>
-<h3 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h3><p>阅读内存编码数据结构实现：<br>整数集合（intset）数据结构intset.h 和 intset.c<br>压缩列表（zip list）数据结构ziplist.h 和 ziplist.c</p>
-<h3 id="第三阶段"><a href="#第三阶段" class="headerlink" title="第三阶段"></a>第三阶段</h3><p>阅读数据类型实现：<br>redis 的对象（类型）系统实现object.c<br>字符串键的实现t_string.c<br>列表键的实现 t_list.c<br>散列键的实现 t_hash.c<br>集合键的实现 t_set.c<br>有序集合键的实现 t_zset.c 中除 zsl 开头的函数之外的所有函数<br>HyperLogLog 键的实现 hyperloglog.c 中所有以 pf 开头的函数</p>
-<h3 id="第四阶段"><a href="#第四阶段" class="headerlink" title="第四阶段"></a>第四阶段</h3><p>阅读Redis数据库的实现：<br>redis的数据库实现 redis.h文件中的redisDb结构，以及db.c文件<br>redis的数据库通知功能实现 notify.c<br>redis的RDB持久化实现代码 rdb.c<br>redis的AOF持久化 aof.c<br>以及一些独立功能模块的实现</p>
-<p>发布与订阅功能的实现 redis.h文件的pubsubPattern结构，以及pubsub.c文件<br>事务功能的实现 redis.h文件的multiState结构以及multiCmd结构，multi.c文件<br>SORT 命令的实现 sort.c<br>GETBIT 、 SETBIT 等二进制位操作命令的实现 bitops.c</p>
-<h3 id="第五阶段"><a href="#第五阶段" class="headerlink" title="第五阶段"></a>第五阶段</h3><p>阅读客户端和服务器的相关代码：<br>redis的事件处理模块 ae.c/ae_epoll.c/ae_evport.c/ae_kqueue.c/ae_select.c<br>redis的网路链接库 anet.c和networking.c<br>redis的服务器端 server.c<br>redis的客户端 redis-cli.c<br>以及一些独立功能模块的实现<br>lua脚本 scripting.c<br>慢查询 slowlog.c<br>监视 monitor.c</p>
-<h3 id="第六阶段"><a href="#第六阶段" class="headerlink" title="第六阶段"></a>第六阶段</h3><p>阅读Redis多机功能的实现<br>redis的复制功能 replication.c<br>redis sentinel sentinel.c<br>redis的集群 cluster.c</p>
-<a id="more"></a>
+        <p>redis使用c语言编写，而C语言没有垃圾回收机制，所有的内存分配和释放都要手动管理。Redis在实现中封装了C语言的malloc,calloc,realloc和free函数，加上一些异常处理和内存统计功能来对自己的内存进行管理，主要实现在zmalloc.h和zmalloc.c中。<a id="more"></a></p>
+<h2 id="屏蔽底层平台的差异"><a href="#屏蔽底层平台的差异" class="headerlink" title="屏蔽底层平台的差异"></a>屏蔽底层平台的差异</h2><p>redis对系统的内存分配释放函数进行了一层简单的封装，屏蔽了底层平台的差异，同时方便自己实现相关的函数。src/zmalloc.h文件中的相关宏定义屏蔽了底层平台之间的差异，相关宏定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//是否使用tcmalloc，如果是，会用tcmalloc对应的函数替换掉标准的libc中的函数实现</span></div><div class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(USE_TCMALLOC)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> ZMALLOC_LIB (<span class="meta-string">"tcmalloc-"</span> __xstr(TC_VERSION_MAJOR) <span class="meta-string">"."</span> __xstr(TC_VERSION_MINOR))</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;google/tcmalloc.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">if</span> (TC_VERSION_MAJOR == 1 &amp;&amp; TC_VERSION_MINOR &gt;= 6) || (TC_VERSION_MAJOR &gt; 1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> HAVE_MALLOC_SIZE 1</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> zmalloc_size(p) tc_malloc_size(p)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">error</span> <span class="meta-string">"Newer version of tcmalloc required"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"><span class="comment">//是否使用jemalloc，如果是，会用jemalloc对应的函数替换掉标准的libc中的函数实现</span></div><div class="line"><span class="comment">//jemalloc已经作为源码包的一部分包含在源码包deps/jemalloc目录下，可以直接被使用</span></div><div class="line"><span class="meta">#<span class="meta-keyword">elif</span> defined(USE_JEMALLOC)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> ZMALLOC_LIB (<span class="meta-string">"jemalloc-"</span> __xstr(JEMALLOC_VERSION_MAJOR) <span class="meta-string">"."</span> __xstr(JEMALLOC_VERSION_MINOR) <span class="meta-string">"."</span> __xstr(JEMALLOC_VERSION_BUGFIX))</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;jemalloc/jemalloc.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">if</span> (JEMALLOC_VERSION_MAJOR == 2 &amp;&amp; JEMALLOC_VERSION_MINOR &gt;= 1) || (JEMALLOC_VERSION_MAJOR &gt; 2)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> HAVE_MALLOC_SIZE 1</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> zmalloc_size(p) je_malloc_usable_size(p)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">error</span> <span class="meta-string">"Newer version of jemalloc required"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"><span class="comment">//当前系统是否是Mac系统，如果是，则使用&lt;malloc/malloc.h&gt;中的内存分配函数</span></div><div class="line"><span class="meta">#<span class="meta-keyword">elif</span> defined(__APPLE__)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;malloc/malloc.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> HAVE_MALLOC_SIZE 1</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> zmalloc_size(p) malloc_size(p)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"><span class="comment">//最后使用标准的libc中的内存管理函数</span></div><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> ZMALLOC_LIB</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> ZMALLOC_LIB <span class="meta-string">"libc"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> HAVE_MALLOC_SIZE</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> PREFIX_SIZE (0)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(__sun) || defined(__sparc) || defined(__sparc__)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> PREFIX_SIZE (sizeof(long long))</span></div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> PREFIX_SIZE (sizeof(size_t))</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure>
+<p>从上面的宏预处理，我们可以看出redis为了屏蔽不同系统库的差异进行了如下预处理：</p>
+<ul>
+<li>若系统中存在Google的TC_MALLOC库，则使用tc_malloc一族函数代替原本的malloc一族函数</li>
+<li>若系统中存在FaceBook的JEMALLOC库，则使用je_malloc一族函数代替原本的malloc一族函数 </li>
+<li>若当前系统是Mac系统，则使用<malloc malloc.h="">中的内存分配函数</malloc></li>
+<li>其他情况，在每一段分配好的空间头，同时多分配一个PREFIX_SIZE长度的字段，用来记录分配的空间大小 </li>
+</ul>
+<h2 id="内存管理函数"><a href="#内存管理函数" class="headerlink" title="内存管理函数"></a>内存管理函数</h2><p>redis内存管理的相关函数主要声明在src/zmalloc.h文件中，主要实现了内存的分配、释放、异常处理和内存统计功能。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">void *zmalloc(size_t size); //调用zmalloc函数，申请size大小的空间</div><div class="line">void *zcalloc(size_t size); //调用系统函数calloc申请内存空间</div><div class="line">void *zrealloc(void *ptr, size_t size);//原内存重新调整为size空间的大小</div><div class="line">void zfree(void *ptr); //调用zfree函数释放内存空间</div><div class="line">char *zstrdup(const char *s); //字符串复制方法</div><div class="line">size_t zmalloc_used_memory(void); //获取当前以及占用的内存空间大小</div><div class="line">void zmalloc_set_oom_handler(void (*oom_handler)(size_t));//自定义设置内存溢出的处理方法</div><div class="line">float zmalloc_get_fragmentation_ratio(size_t rss); //获取所给内存和已使用内存的大小之比</div><div class="line">size_t zmalloc_get_rss(void); //获取RSS信息(Resident Set Size)</div><div class="line">size_t zmalloc_get_private_dirty(long pid); //获得实际内存大小</div><div class="line">size_t zmalloc_get_smap_bytes_by_field(char *field, long pid); //获取/proc/self/smaps字段的字节数</div><div class="line">size_t zmalloc_get_memory_size(void); //获取物理内存大小</div><div class="line">void zlibc_free(void *ptr); //原始系统free释放方法</div></pre></td></tr></table></figure>
+<p>整个redis源码按照上述的几个阶段去阅读学习，相信最后一定会有很大的收获！</p>
 
       
     </div>
-
+    
     <div>
       
         
@@ -440,11 +442,54 @@
       
     </div>
 
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束，感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/03/05/redis/redis-memory-management/">Redis源码剖析--Redis内存管理</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Ryan Ruan 的个人博客">Ryan Ruan</a></p>
+  <p><span>本文链接:</span><a href="/2018/03/05/redis/redis-memory-management/" title="Redis源码剖析--Redis内存管理">http://yoursite.com/2018/03/05/redis/redis-memory-management/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2018/03/05/redis/redis-memory-management/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+	  $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+      
+    </div>
+    
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/Redis/" rel="tag"># Redis</a>
+            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
           
         </div>
       
@@ -457,8 +502,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/02/read/tools-read/" rel="next" title="读过的文章">
-                <i class="fa fa-chevron-left"></i> 读过的文章
+              <a href="/2018/03/02/redis/redis-read-method/" rel="next" title="Redis源码剖析--Redis源码结构及阅读方法">
+                <i class="fa fa-chevron-left"></i> Redis源码剖析--Redis源码结构及阅读方法
               </a>
             
           </div>
@@ -537,7 +582,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -639,7 +684,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis源码获取"><span class="nav-number">1.</span> <span class="nav-text">Redis源码获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis源码解析"><span class="nav-number">2.</span> <span class="nav-text">Redis源码解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一阶段"><span class="nav-number">2.1.</span> <span class="nav-text">第一阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二阶段"><span class="nav-number">2.2.</span> <span class="nav-text">第二阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三阶段"><span class="nav-number">2.3.</span> <span class="nav-text">第三阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四阶段"><span class="nav-number">2.4.</span> <span class="nav-text">第四阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第五阶段"><span class="nav-number">2.5.</span> <span class="nav-text">第五阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第六阶段"><span class="nav-number">2.6.</span> <span class="nav-text">第六阶段</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#屏蔽底层平台的差异"><span class="nav-number">1.</span> <span class="nav-text">屏蔽底层平台的差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理函数"><span class="nav-number">2.</span> <span class="nav-text">内存管理函数</span></a></li></ol></div>
             
 
           </div>
