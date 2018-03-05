@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-03-03T16:25:29.000Z</updated>
+  <updated>2018-03-05T06:00:36.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/03/02/redis/redis-read-method/"/>
     <id>http://yoursite.com/2018/03/02/redis/redis-read-method/</id>
     <published>2018-03-01T16:00:00.000Z</published>
-    <updated>2018-03-03T16:25:29.000Z</updated>
+    <updated>2018-03-05T06:00:36.000Z</updated>
     
     <content type="html"><![CDATA[<p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。<a id="more"></a></p>
 <h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：  </p>
@@ -92,6 +92,7 @@
 <li>redis sentinel sentinel.c</li>
 <li>redis的集群 cluster.c</li>
 </ul>
+<p>整个redis源码按照上述的几个阶段去阅读学习，相信最后一定会有很大的收获！</p>
 ]]></content>
     
     <summary type="html">
