@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="Ryan&#39;s notes">
 <meta property="og:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。">
 <meta property="og:image" content="http://yoursite.com/img/redis/overview/1.png">
-<meta property="og:updated_time" content="2018-03-05T15:57:25.000Z">
+<meta property="og:updated_time" content="2018-03-07T13:26:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis源码剖析--Redis源码结构及阅读方法">
 <meta name="twitter:description" content="由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。">
@@ -238,6 +238,16 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-booklist">
+          <a href="/booklist/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            书单
           </a>
         </li>
       
@@ -420,7 +430,7 @@
 <p>根据黄健宏老师推荐的阅读顺序（<a href="http://blog.huangz.me/diary/2014/how-to-read-redis-source-code.html" target="_blank" rel="external">如何阅读Redis源码?</a>），可以将redis源代码进行模块的拆分，按阶段由浅入深地阅读学习。   </p>
 <h3 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h3><p>阅读redis源码的数据结构部分：</p>
 <ul>
-<li>redis的内存分配 zmalloc.h和zmalloc.c</li>
+<li>redis的内存分配 atomicvar.h，zmalloc.h和zmalloc.c</li>
 <li>redis的动态字符串实现 sds.h和sds.c</li>
 <li>redis的双端链表实现 adlist.h和adlist.c</li>
 <li>redis的的字典实现 dict.h和dict.c</li>
