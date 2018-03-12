@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="收藏," />
+  <meta name="keywords" content="Redis," />
 
 
 
@@ -95,17 +95,19 @@
 
 
 
-<meta name="description" content="Hexo使用Hexo搭建个人博客(基于hexo3.0)将hexo博客同时托管到github和coding">
-<meta name="keywords" content="收藏">
+<meta name="description" content="redis没有使用c语言的字符串标识，而是自己构建了已个简单的动态字符串结构SDS，主要实现在sds.h和sds.c中。">
+<meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="读过的文章">
-<meta property="og:url" content="http://yoursite.com/2017/07/02/read/tools-read/index.html">
+<meta property="og:title" content="Redis源码剖析--简单动态字符串sds">
+<meta property="og:url" content="http://yoursite.com/2018/03/08/redis/redis-sds/index.html">
 <meta property="og:site_name" content="Ryan&#39;s notes">
-<meta property="og:description" content="Hexo使用Hexo搭建个人博客(基于hexo3.0)将hexo博客同时托管到github和coding">
-<meta property="og:updated_time" content="2018-03-03T16:25:21.000Z">
+<meta property="og:description" content="redis没有使用c语言的字符串标识，而是自己构建了已个简单的动态字符串结构SDS，主要实现在sds.h和sds.c中。">
+<meta property="og:image" content="http://yoursite.com/img/redis/sds/1.png">
+<meta property="og:updated_time" content="2018-03-08T15:37:35.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="读过的文章">
-<meta name="twitter:description" content="Hexo使用Hexo搭建个人博客(基于hexo3.0)将hexo博客同时托管到github和coding">
+<meta name="twitter:title" content="Redis源码剖析--简单动态字符串sds">
+<meta name="twitter:description" content="redis没有使用c语言的字符串标识，而是自己构建了已个简单的动态字符串结构SDS，主要实现在sds.h和sds.c中。">
+<meta name="twitter:image" content="http://yoursite.com/img/redis/sds/1.png">
 
 
 
@@ -133,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/02/read/tools-read/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/08/redis/redis-sds/"/>
 
 
 
 
 
-  <title>读过的文章 | Ryan's notes</title>
+  <title>Redis源码剖析--简单动态字符串sds | Ryan's notes</title>
   
 
 
@@ -316,7 +318,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/02/read/tools-read/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/redis/redis-sds/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Ruan">
@@ -333,7 +335,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">读过的文章</h1>
+          <h1 class="post-title" itemprop="name headline">Redis源码剖析--简单动态字符串sds</h1>
         
 
         <div class="post-meta">
@@ -345,8 +347,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-02T00:00:00+08:00">
-                2017-07-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T00:00:00+08:00">
+                2018-03-08
               </time>
             
 
@@ -368,8 +370,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/已阅/" itemprop="url" rel="index">
-                    <span itemprop="name">已阅</span>
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
                   </a>
                 </span>
 
@@ -385,7 +387,7 @@
 
           
           
-             <span id="/2017/07/02/read/tools-read/" class="leancloud_visitors" data-flag-title="读过的文章">
+             <span id="/2018/03/08/redis/redis-sds/" class="leancloud_visitors" data-flag-title="Redis源码剖析--简单动态字符串sds">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -413,9 +415,24 @@
       
 
       
-        <h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p><a href="http://opiece.me/2015/04/09/hexo-guide/" target="_blank" rel="external">使用Hexo搭建个人博客(基于hexo3.0)</a><br><a href="http://opiece.me/2016/03/13/push-hexo-to-github-and-coding/" target="_blank" rel="external">将hexo博客同时托管到github和coding</a><a id="more"></a><br><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档</a><br><a href="http://theme-next.iissnan.com" target="_blank" rel="external">next主题配置官网</a><br><a href="http://joveyzheng.com/2016/03/03/hexo-theme-next-brief-talk/" target="_blank" rel="external">next主题显示RSS配置</a><br><a href="http://www.maoxuner.cn/2017/03/10/hexo-skip-render.html" target="_blank" rel="external">Hexo渲染时排除部分文件或目录</a><br><a href="http://www.5isjyx.com/coding/201704/nextreadthefulltext.html" target="_blank" rel="external">next主题怎么让首页不显示全文</a><br><a href="https://asdfv1929.github.io/2018/01/28/add-the-end/" target="_blank" rel="external">next主题内给每篇文章后添加结束标语</a><br><a href="https://zhuanlan.zhihu.com/p/28128674" target="_blank" rel="external">hexo的next主题个性化教程:打造炫酷网站</a></p>
-<h2 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h2><p><a href="http://blog.leanote.com/post/freewalk/Markdown-语法手册" target="_blank" rel="external">Markdown语法手册</a><br><a href="http://wowubuntu.com/markdown" target="_blank" rel="external">Markdown语法说明</a><br><a href="http://einverne.github.io/markdown-style-guide/zh.html" target="_blank" rel="external">Markdown书写风格指南（中文）</a><br><a href="https://github.com/cirosantilli/markdown-style-guide/blob/gh-pages/index.md" target="_blank" rel="external">Markdown书写风格指南（英文）</a>     </p>
-<h2 id="GitBook"><a href="#GitBook" class="headerlink" title="GitBook"></a>GitBook</h2><p><a href="http://gitbook.zhangjikai.com" target="_blank" rel="external">GitBook 使用教程</a><br><a href="https://toolchain.gitbook.com" target="_blank" rel="external">GitBook Toolchain Documentation</a>   </p>
+        <p>redis没有使用c语言的字符串标识，而是自己构建了已个简单的动态字符串结构SDS，主要实现在sds.h和sds.c中。<a id="more"></a></p>
+<h2 id="SDS定义"><a href="#SDS定义" class="headerlink" title="SDS定义"></a>SDS定义</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> *sds;</div></pre></td></tr></table></figure>
+<p>从上面的定义看，sds就是char*。与c语言一样，redis也是分配连续的一段内存来保存字符串，但与c语言字符串不同的是，redis的字符串是二进制安全的，它可以存储任意二进制数据，所以它不能以’\0’来标识字符串的结束，因此必定存在一个长度字段已获取整个字符串。长度字段见header定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Note: sdshdr5 is never used, we just access the flags byte directly.</span></div><div class="line"> * However is here to document the layout of type 5 SDS strings. */</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr5</span> &#123;</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">// flags共8位，低三位保存类型标志，高5位保存字符串长度，字符串长度必须小于32(2^5-1)</span></div><div class="line">    <span class="keyword">char</span> buf[]; <span class="comment">// 保存具体的字符串</span></div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr8</span> &#123;</span></div><div class="line">    <span class="keyword">uint8_t</span> len; <span class="comment">// 字符串长度，不包含最后的空终止字符</span></div><div class="line">    <span class="keyword">uint8_t</span> alloc; <span class="comment">// 字符串的最大容量，不包含header和最后的空终止字符</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">// 低三位保存类型标志</span></div><div class="line">    <span class="keyword">char</span> buf[]; <span class="comment">// 保存具体的字符串</span></div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr16</span> &#123;</span></div><div class="line">    <span class="keyword">uint16_t</span> len; <span class="comment">/* used */</span></div><div class="line">    <span class="keyword">uint16_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></div><div class="line">    <span class="keyword">char</span> buf[];</div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr32</span> &#123;</span></div><div class="line">    <span class="keyword">uint32_t</span> len; <span class="comment">/* used */</span></div><div class="line">    <span class="keyword">uint32_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></div><div class="line">    <span class="keyword">char</span> buf[];</div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr64</span> &#123;</span></div><div class="line">    <span class="keyword">uint64_t</span> len; <span class="comment">/* used */</span></div><div class="line">    <span class="keyword">uint64_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></div><div class="line">    <span class="keyword">char</span> buf[];</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>sds使用了5种header定义以节省内存，而sdshdr5永远不会被使用，其他4种header都有以下4个字段：</p>
+<ul>
+<li>len：字符串长度，不包含最后的空终止字符</li>
+<li>alloc：字符串的最大容量，不包含header和最后的空终止字符</li>
+<li>flags：header的类型</li>
+<li>buf：保存具体的字符串</li>
+</ul>
+<p>5种header的flags取值如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_5  0</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_8  1</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_16 2</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_32 3</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_64 4</span></div></pre></td></tr></table></figure>
+<p>这里需要注意的是<strong>attribute</strong> ((<strong><strong>packed</strong></strong>))，它的作用是告诉编译器取消结构在编译过程中的内存对齐,按照实际占用字节数进行分配。如果没有<strong>attribute</strong> ((<strong>packed</strong>)，就不能保证sds的header部分和数据部分是紧紧相邻的，不能按照固定偏移量获取flags字段。因此，redis的sds字符串的内存布局如下：</p>
+<p><img src="/img/redis/sds/1.png" alt="sds memory layout"> </p>
+<p>sds定义了以下几个宏来操作header：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_MASK 7 <span class="comment">// 类型掩码</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_BITS 3</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_HDR_VAR(T,s) struct sdshdr##T *sh = (void*)((s)-(sizeof(struct sdshdr##T))); <span class="comment">// 获取header头指针</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_HDR(T,s) ((struct sdshdr##T *)((s)-(sizeof(struct sdshdr##T)))) <span class="comment">// 获取header头指针</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_5_LEN(f) ((f)&gt;&gt;SDS_TYPE_BITS) <span class="comment">// 获取sdshdr5的len值</span></span></div></pre></td></tr></table></figure>
+<p>这里要注意的是sdshdr##T表示将sdshdr和T连接成一个，如T为8，sdshdr##T即为sdshdr8。</p>
 
       
     </div>
@@ -460,10 +477,10 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2017/07/02/read/tools-read/">读过的文章</a></p>
+  <p><span>本文标题:</span><a href="/2018/03/08/redis/redis-sds/">Redis源码剖析--简单动态字符串sds</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Ryan Ruan 的个人博客">Ryan Ruan</a></p>
-  <p><span>本文链接:</span><a href="/2017/07/02/read/tools-read/" title="读过的文章">http://yoursite.com/2017/07/02/read/tools-read/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2017/07/02/read/tools-read/"  aria-label="复制成功！"></i></span>
+  <p><span>本文链接:</span><a href="/2018/03/08/redis/redis-sds/" title="Redis源码剖析--简单动态字符串sds">http://yoursite.com/2018/03/08/redis/redis-sds/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2018/03/08/redis/redis-sds/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -488,7 +505,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/收藏/" rel="tag"><i class="fa fa-tag"></i> 收藏</a>
+            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
           
         </div>
       
@@ -501,8 +518,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/25/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/03/05/redis/redis-memory-management/" rel="next" title="Redis源码剖析--内存管理">
+                <i class="fa fa-chevron-left"></i> Redis源码剖析--内存管理
               </a>
             
           </div>
@@ -510,10 +527,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/02/redis/redis-read-method/" rel="prev" title="Redis源码剖析--源码结构及阅读方法">
-                Redis源码剖析--源码结构及阅读方法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -687,7 +700,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo"><span class="nav-number">1.</span> <span class="nav-text">Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Markdown"><span class="nav-number">2.</span> <span class="nav-text">Markdown</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitBook"><span class="nav-number">3.</span> <span class="nav-text">GitBook</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SDS定义"><span class="nav-number">1.</span> <span class="nav-text">SDS定义</span></a></li></ol></div>
             
 
           </div>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-03-07T15:47:56.000Z</updated>
+  <updated>2018-03-08T15:37:35.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,51 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Redis源码剖析--Redis内存管理</title>
+    <title>Redis源码剖析--简单动态字符串sds</title>
+    <link href="http://yoursite.com/2018/03/08/redis/redis-sds/"/>
+    <id>http://yoursite.com/2018/03/08/redis/redis-sds/</id>
+    <published>2018-03-07T16:00:00.000Z</published>
+    <updated>2018-03-08T15:37:35.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>redis没有使用c语言的字符串标识，而是自己构建了已个简单的动态字符串结构SDS，主要实现在sds.h和sds.c中。<a id="more"></a></p>
+<h2 id="SDS定义"><a href="#SDS定义" class="headerlink" title="SDS定义"></a>SDS定义</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> *sds;</div></pre></td></tr></table></figure>
+<p>从上面的定义看，sds就是char*。与c语言一样，redis也是分配连续的一段内存来保存字符串，但与c语言字符串不同的是，redis的字符串是二进制安全的，它可以存储任意二进制数据，所以它不能以’\0’来标识字符串的结束，因此必定存在一个长度字段已获取整个字符串。长度字段见header定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Note: sdshdr5 is never used, we just access the flags byte directly.</span></div><div class="line"> * However is here to document the layout of type 5 SDS strings. */</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr5</span> &#123;</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">// flags共8位，低三位保存类型标志，高5位保存字符串长度，字符串长度必须小于32(2^5-1)</span></div><div class="line">    <span class="keyword">char</span> buf[]; <span class="comment">// 保存具体的字符串</span></div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr8</span> &#123;</span></div><div class="line">    <span class="keyword">uint8_t</span> len; <span class="comment">// 字符串长度，不包含最后的空终止字符</span></div><div class="line">    <span class="keyword">uint8_t</span> alloc; <span class="comment">// 字符串的最大容量，不包含header和最后的空终止字符</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">// 低三位保存类型标志</span></div><div class="line">    <span class="keyword">char</span> buf[]; <span class="comment">// 保存具体的字符串</span></div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr16</span> &#123;</span></div><div class="line">    <span class="keyword">uint16_t</span> len; <span class="comment">/* used */</span></div><div class="line">    <span class="keyword">uint16_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></div><div class="line">    <span class="keyword">char</span> buf[];</div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr32</span> &#123;</span></div><div class="line">    <span class="keyword">uint32_t</span> len; <span class="comment">/* used */</span></div><div class="line">    <span class="keyword">uint32_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></div><div class="line">    <span class="keyword">char</span> buf[];</div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr64</span> &#123;</span></div><div class="line">    <span class="keyword">uint64_t</span> len; <span class="comment">/* used */</span></div><div class="line">    <span class="keyword">uint64_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></div><div class="line">    <span class="keyword">char</span> buf[];</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>sds使用了5种header定义以节省内存，而sdshdr5永远不会被使用，其他4种header都有以下4个字段：</p>
+<ul>
+<li>len：字符串长度，不包含最后的空终止字符</li>
+<li>alloc：字符串的最大容量，不包含header和最后的空终止字符</li>
+<li>flags：header的类型</li>
+<li>buf：保存具体的字符串</li>
+</ul>
+<p>5种header的flags取值如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_5  0</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_8  1</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_16 2</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_32 3</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_64 4</span></div></pre></td></tr></table></figure>
+<p>这里需要注意的是<strong>attribute</strong> ((<strong><strong>packed</strong></strong>))，它的作用是告诉编译器取消结构在编译过程中的内存对齐,按照实际占用字节数进行分配。如果没有<strong>attribute</strong> ((<strong>packed</strong>)，就不能保证sds的header部分和数据部分是紧紧相邻的，不能按照固定偏移量获取flags字段。因此，redis的sds字符串的内存布局如下：</p>
+<p><img src="/img/redis/sds/1.png" alt="sds memory layout"> </p>
+<p>sds定义了以下几个宏来操作header：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_MASK 7 <span class="comment">// 类型掩码</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_BITS 3</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_HDR_VAR(T,s) struct sdshdr##T *sh = (void*)((s)-(sizeof(struct sdshdr##T))); <span class="comment">// 获取header头指针</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_HDR(T,s) ((struct sdshdr##T *)((s)-(sizeof(struct sdshdr##T)))) <span class="comment">// 获取header头指针</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> SDS_TYPE_5_LEN(f) ((f)&gt;&gt;SDS_TYPE_BITS) <span class="comment">// 获取sdshdr5的len值</span></span></div></pre></td></tr></table></figure>
+<p>这里要注意的是sdshdr##T表示将sdshdr和T连接成一个，如T为8，sdshdr##T即为sdshdr8。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;redis没有使用c语言的字符串标识，而是自己构建了已个简单的动态字符串结构SDS，主要实现在sds.h和sds.c中。
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://yoursite.com/categories/Redis/"/>
+    
+    
+      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis源码剖析--内存管理</title>
     <link href="http://yoursite.com/2018/03/05/redis/redis-memory-management/"/>
     <id>http://yoursite.com/2018/03/05/redis/redis-memory-management/</id>
     <published>2018-03-04T16:00:00.000Z</published>
-    <updated>2018-03-07T15:47:56.000Z</updated>
+    <updated>2018-03-08T14:04:22.000Z</updated>
     
     <content type="html"><![CDATA[<p>redis使用c语言编写，而c语言没有垃圾回收机制，所有的内存分配和释放都要手动管理。redis在实现中封装c语言的malloc,calloc,realloc和free函数，加上一些异常处理和内存统计功能来对自己的内存进行管理，主要实现在zmalloc.h和zmalloc.c中。<a id="more"></a></p>
 <h2 id="屏蔽底层平台的差异"><a href="#屏蔽底层平台的差异" class="headerlink" title="屏蔽底层平台的差异"></a>屏蔽底层平台的差异</h2><p>redis对系统的内存分配释放函数进行了一层简单的封装，屏蔽了底层平台的差异，同时方便自己实现相关的函数。src/zmalloc.h文件中的相关宏定义屏蔽了底层平台之间的差异，相关宏定义如下：</p>
@@ -75,11 +115,11 @@
   </entry>
   
   <entry>
-    <title>Redis源码剖析--Redis源码结构及阅读方法</title>
+    <title>Redis源码剖析--源码结构及阅读方法</title>
     <link href="http://yoursite.com/2018/03/02/redis/redis-read-method/"/>
     <id>http://yoursite.com/2018/03/02/redis/redis-read-method/</id>
     <published>2018-03-01T16:00:00.000Z</published>
-    <updated>2018-03-07T13:26:54.000Z</updated>
+    <updated>2018-03-08T14:04:16.000Z</updated>
     
     <content type="html"><![CDATA[<p>由于工作中用到redis，并且redis的源码相对其他开源软件比较简单，因此先从学习redis源码开始，慢慢累积自己的技术知识。<a id="more"></a></p>
 <h2 id="Redis源码获取"><a href="#Redis源码获取" class="headerlink" title="Redis源码获取"></a>Redis源码获取</h2><p>redis源码是开源的，从redis官网下载最新版的stable版本redis 4.0.8，下载地址为<a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="external">http://download.redis.io/releases/redis-4.0.8.tar.gz</a>。执行以下命令：  </p>
